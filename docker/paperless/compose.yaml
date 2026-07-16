@@ -1,0 +1,55 @@
+services:
+  broker:
+    image: redis:7.4.2-alpine
+    container_name: paperless-redis
+    restart: unless-stopped
+    volumes:
+      - /srv/data/paperless/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  db:
+    image: postgres:17.5
+    container_name: paperless-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${PAPERLESS_DBNAME:-paperless}
+      POSTGRES_USER: ${PAPERLESS_DBUSER:-paperless}
+      POSTGRES_PASSWORD: ${PAPERLESS_DBPASS:?set PAPERLESS_DBPASS in .env}
+    volumes:
+      - /srv/data/paperless/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.16.2
+    container_name: paperless
+    restart: unless-stopped
+    depends_on:
+      broker:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_DBNAME: ${PAPERLESS_DBNAME:-paperless}
+      PAPERLESS_DBUSER: ${PAPERLESS_DBUSER:-paperless}
+      PAPERLESS_DBPASS: ${PAPERLESS_DBPASS:?set PAPERLESS_DBPASS in .env}
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY:?set PAPERLESS_SECRET_KEY in .env}
+      PAPERLESS_URL: ${PAPERLESS_URL:?set PAPERLESS_URL in .env}
+      PAPERLESS_TIME_ZONE: ${TZ:-Asia/Seoul}
+      PAPERLESS_OCR_LANGUAGE: ${PAPERLESS_OCR_LANGUAGE:-kor+eng}
+    ports:
+      - "127.0.0.1:${PAPERLESS_PORT:-8000}:8000"
+    volumes:
+      - /srv/data/paperless/data:/usr/src/paperless/data
+      - /srv/data/paperless/media:/usr/src/paperless/media
+      - /srv/data/paperless/export:/usr/src/paperless/export
+      - /srv/data/paperless/consume:/usr/src/paperless/consume

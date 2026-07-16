@@ -1,0 +1,36 @@
+# Secrets and local environment files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Certificates and private keys
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Runtime data, backups, and archives
+backup/*
+!backup/.gitkeep
+!backup/README.md
+*.bak
+*.dump
+*.sql
+*.tar
+*.tar.gz
+*.zip
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Logs and temporary files
+*.log
+tmp/
+temp/

@@ -1,0 +1,13 @@
+services:
+  ollama:
+    image: ollama/ollama:0.9.3
+    container_name: ollama
+    restart: unless-stopped
+    environment:
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:-5m}
+    ports:
+      - "127.0.0.1:${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - /srv/data/ollama:/root/.ollama
+    # NVIDIA GPU 사용 시 호스트에 Container Toolkit을 설치하고 아래 주석을 해제하세요.
+    # gpus: all
