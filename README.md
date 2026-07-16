@@ -29,6 +29,11 @@ sudo docker compose up -d
 
 서비스별 필수 디렉터리와 설정은 각 서비스의 README를 확인합니다.
 
+## 설치된 서비스
+
+- Homepage (`http://localhost:3000`): Portainer, n8n 등 운영 서비스의 정적 바로가기 대시보드
+- Uptime Kuma (`http://localhost:3001`): 서비스 가용성 및 응답 상태 모니터링
+
 ## 복원 절차
 
 1. 새 서버에 Docker Engine과 Compose 플러그인을 설치합니다.

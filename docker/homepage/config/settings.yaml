@@ -1,0 +1,13 @@
+title: HS-AI-SERVER
+language: ko
+theme: dark
+layout:
+  Infrastructure:
+    style: row
+    columns: 2
+  Databases:
+    style: row
+    columns: 2
+  Development:
+    style: row
+    columns: 2

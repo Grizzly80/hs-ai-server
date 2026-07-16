@@ -1,0 +1,24 @@
+- Infrastructure:
+    - Portainer:
+        icon: portainer.svg
+        href: https://localhost:9443
+        description: Docker container management
+    - n8n:
+        icon: n8n.svg
+        href: http://localhost:5678
+        description: Workflow automation
+    - Uptime Kuma:
+        icon: uptime-kuma.svg
+        href: http://localhost:3001
+        description: Service uptime monitoring
+
+- Databases:
+    - PostgreSQL:
+        icon: postgresql.svg
+        description: PostgreSQL 17 database
+
+- Development:
+    - GitHub Repository:
+        icon: github.svg
+        href: https://github.com/Grizzly80/hs-ai-server
+        description: HS-AI-SERVER configuration repository
